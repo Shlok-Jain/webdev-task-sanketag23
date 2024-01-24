@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange in columns */
+            height: 100vh;
+            margin: 0;
+            padding: 35px;
+            background-color: #3e3b3b; /* Greyish background color */
+        }
+
+        #container {
+            background-color: #989797; /* Grey background color for the container */
+            padding: 20px; /* Adjust padding as needed */
+            display: flex; /* Nested flex container for side by side */
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+            justify-content: center; /* Center the content horizontally */
+        }
+
+        .select-box {
+            margin: 10px;
+            flex: 1 0 calc(33.33% - 20px); /* Flex basis for three columns with 20px margin */
+        }
+
+        select {
+            width: 100%; /* Take up the full width of the parent */
+            height: 60px; /* Increased height */
+            font-size: larger;
+            background-color: #f2f2f2; /* Greyish background color */
+        }
+
+        #batch, #gender, #branch, #Hall, #Programme, #Wing {
+
+        }
+
+        #search-box {
+            margin: 10px;
+            flex: 1 0 calc(100% - 20px); /* Full width with 20px margin */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            height: 40px;
+            padding: 5px;
+            font-size: larger;
+        }
+
+        #results {
+            margin: 20px;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+
+        #submit-btn {
+            margin: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="select-box" id="batch">
+            <select name="batch">
+                <option value=""  selected>Batch</option>
+                <option value="y21">Y21</option>
+                <option value="y22">Y22</option>
+                <option value="y23">Y23</option>
+            </select>
+        </div>
+
+        <div class="select-box" id="gender">
+            <select name="gender">
+                <option value=""  selected>Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="select-box" id="branch">
+            <select name="branch">
+                <option value=""  selected>Branch</option>
+                <option value="cs">Computer Science</option>
+                <option value="ee">Electrical Engineering</option>
+            </select>
+        </div>
+
+        <div class="select-box" id="Hall">
+            <select name="Hall">
+                <option value=""  selected>Hall</option>
+                <option value="h1">Hall1</option>
+                <option value="h2">Hall2</option>
+                <option value="h3">Hall3</option>
+                <option value="h4">Hall4</option>
+                <option value="h5">Hall5</option>
+                <option value="h6">Hall6</option>
+                <option value="h7">Hall7</option>
+                <option value="h8">Hall8</option>
+                <option value="h9">Hall9</option>
+                <option value="h10">Hall10</option>
+                <option value="h11">Hall11</option>
+                <option value="h12">Hall12</option>
+                <option value="h13">Hall13</option>
+                <option value="h14">Hall14</option>
+                <option value="gh1">GHall15</option>
+            </select>
+        </div>
+
+        <div class="select-box" id="Wing">
+            <select name="Wing">
+                <option value=""  selected>Wing</option>
+                <option value="D1">D1</option>
+                <option value="D2">D2</option>
+                <option value="D3">D3</option>
+                <option value="D4">D4</option>
+                <option value="D5">D5</option>
+                <option value="D6">D6</option>
+            </select>
+        </div>
+
+        <div class="select-box" id="Programme">
+            <select name="">
+                <option value=""  selected>Programme</option>
+                <option value="Bt">B-Tech</option>
+                <option value="Bs">BS</option>
+                <option value="Ms">MS</option>
+                <option value="Phd">Phd</option>
+                <option value="Mtech">M-Tech</option>
+            </select>
+        </div>
+
+        <div id="search-box">
+            <input type="text" placeholder="Enter the name, roll no">
+        </div>
+
+        <button id="submit-btn" onclick="submitForm()">Submit</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Function to generate random persons
+        function generateRandomPersons() {
+            return [
+                { name: 'Shlok', branch: 'cs', Programme: 'Bt', Wing: 'D2', year: 'y23', gender: 'Male', Hall: 'h13' },
+                { name: 'Riggy', branch: 'ee', Programme: 'Bt', Wing: 'D2', year: 'y23', gender: 'Male', Hall: 'h13' },
+                { name: 'Sarim', branch: 'ee', Programme: 'Bt', Wing: 'D2', year: 'y23', gender: 'Male', Hall: 'h13' },
+            ];
+        }
+    
+        // Function to filter persons based on selected criteria
+        function filterPersons(criteria) {
+            return generateRandomPersons().filter(person => {
+                return Object.keys(criteria).every(key => {
+                    const personValue = String(person[key]).toLowerCase();
+                    const criteriaValue = criteria[key].toLowerCase();
+                    return criteria[key] === "" || personValue.includes(criteriaValue);
+                });
+            });
+        }
+    
+        // Function to display filtered persons
+        function displayResults(filteredPersons) {
+            const resultsContainer = document.getElementById("results");
+            resultsContainer.innerHTML = "";
+    
+            if (filteredPersons.length === 0) {
+                resultsContainer.innerText = "No matching persons found.";
+            }
+            else {
+                filteredPersons.forEach(person => {resultsContainer.innerHTML += `<div>${person.name} - ${person.Hall}, ${person.branch}, ${person.Programme}, ${person.Wing}, ${person.gender}, ${person.year}</div>;`
+                });
+            }
+        }
+    
+        // Function to handle form submission
+        function submitForm() {
+            const criteria = {
+                batch: document.querySelector('#batch select').value,
+                gender: document.querySelector('#gender select').value,
+                branch: document.querySelector('#branch select').value,
+                Hall: document.querySelector('#Hall select').value,
+                Wing: document.querySelector('#Wing select').value,
+                Programme: document.querySelector('#Programme select').value,
+                name: document.querySelector('#search-box input').value.toLowerCase(),
+            };
+    
+            const filteredPersons = filterPersons(criteria);
+            displayResults(filteredPersons);
+        }
+    
+        // Event listener for select boxes and input field
+        const selectBoxes = document.querySelectorAll('.select-box select');
+        const inputField = document.querySelector('input[type="text"]');
+        const submitButton = document.getElementById('submit-btn');
+    
+        selectBoxes.forEach(selectBox => {
+            selectBox.addEventListener('change', updateResults);
+        });
+    
+        inputField.addEventListener('input', updateResults);
+        submitButton.addEventListener('click', submitForm);
+    
+        // Update results based on selected criteria
+        function updateResults() {
+            const criteria = {
+                year: document.querySelector('#batch select').value,
+                gender: document.querySelector('#gender select').value,
+                branch: document.querySelector('#branch select').value,
+                Hall: document.querySelector('#Hall select').value,
+                Wing: document.querySelector('#Wing select').value,
+                Programme: document.querySelector('#Programme select').value,
+                search: document.querySelector('#search-box input').value.toLowerCase(),
+            };
+    
+            const filteredPersons = filterPersons(criteria);
+            displayResults(filteredPersons);
+        }
+    </script>
+</body>
+</html>
